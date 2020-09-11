@@ -1,0 +1,8 @@
+DecryptionAlgorithm.hpp
+QQMusicDecoder.cpp
+README.md
+setup.py
+QQMusicDecrypt.egg-info/PKG-INFO
+QQMusicDecrypt.egg-info/SOURCES.txt
+QQMusicDecrypt.egg-info/dependency_links.txt
+QQMusicDecrypt.egg-info/top_level.txt

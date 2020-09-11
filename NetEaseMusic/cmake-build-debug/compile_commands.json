@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cmake-build-debug",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++     -O2 -pipe -std=c++11 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/NetEaseMusicDecoder.dir/main.cpp.o -c /Users/rizhiyi/github/MusicDecoder/NetEaseMusic/main.cpp",
+  "file": "/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/main.cpp"
+},
+{
+  "directory": "/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cmake-build-debug",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++     -O2 -pipe -std=c++11 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/NetEaseMusicDecoder.dir/cJSON/cJSON.cpp.o -c /Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cJSON/cJSON.cpp",
+  "file": "/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cJSON/cJSON.cpp"
+},
+{
+  "directory": "/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cmake-build-debug",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++     -O2 -pipe -std=c++11 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/NetEaseMusicDecoder.dir/NcmCrypt/ncmcrypt.cpp.o -c /Users/rizhiyi/github/MusicDecoder/NetEaseMusic/NcmCrypt/ncmcrypt.cpp",
+  "file": "/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/NcmCrypt/ncmcrypt.cpp"
+},
+{
+  "directory": "/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cmake-build-debug",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++     -O2 -pipe -std=c++11 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/NetEaseMusicDecoder.dir/Aes/aes.cpp.o -c /Users/rizhiyi/github/MusicDecoder/NetEaseMusic/Aes/aes.cpp",
+  "file": "/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/Aes/aes.cpp"
+}
+]
