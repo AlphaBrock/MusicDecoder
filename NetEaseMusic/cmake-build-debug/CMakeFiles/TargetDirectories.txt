@@ -1,3 +1,0 @@
-/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/rizhiyi/github/MusicDecoder/NetEaseMusic/cmake-build-debug/CMakeFiles/NetEaseMusicDecoder.dir

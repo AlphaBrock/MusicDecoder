@@ -14,7 +14,7 @@
 
 ```python
 from QQMusicDecrypt import decrypt
-MusicFile = "/Users/rizhiyi/github/QQMusicDecoder/music/周杰伦-七里香.qmcflac"
+MusicFile = "/Users/rizhiyi/github/MusicDecoder/music/张宇-趁早.qmcflac"
 CovertTime = decrypt(MusicFile)
 # 单位秒
 print(CovertTime)
