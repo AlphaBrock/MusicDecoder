@@ -40,8 +40,8 @@ class get_music_metadata(object):
         ctx = execjs.compile(decrypt_bundle_js)
         encrypt_text = re.search('window.__DATA__ = "([^"]+)"', response.text).group(1)
         try:
-            decryppt_text = ctx.call('decrypt', encrypt_text)
-            return decryppt_text
+            self.decryppt_text = ctx.call('decrypt', encrypt_text)
+            pprint(self.decryppt_text)
         except Exception as e:
             return None
 
@@ -53,12 +53,5 @@ class get_music_metadata(object):
         }
         response = requests.request("GET", self.cover_url, headers=headers)
         return response.status_code, response.content
-
-
-if __name__ == '__main__':
-    search_text = "张宇 趁早"
-    a = get_music_metadata(search_text)
-    rsp = a.search_music()
-    pprint(rsp)
 
 
