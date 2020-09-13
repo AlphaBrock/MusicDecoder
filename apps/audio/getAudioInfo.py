@@ -20,19 +20,27 @@ class prepare(object):
         self.chooseReadType()
 
     def getFileSuffix(self):
-        fileName = os.path.basename(self.file)
-        self.fileSuffix = fileName.split('.')[-1]
+        self.fileName = os.path.basename(self.file)
+        self.fileSuffix = self.fileName.split('.')[-1]
 
     def checkIsHasPic(self):
-        if len(self.songFile.pictures) == 0:
-            return False
-        else:
-            return True
+        if self.fileSuffix == "FLAC" or self.fileSuffix=="flac":
+            if len(self.songFile.pictures) == 0:
+                return False
+            else:
+                return True
+        elif self.fileSuffix == "MP3" or self.fileSuffix == "mp3":
+            try:
+                if self.songFile.tags['APIC:'] is not None:
+                    return True
+            except Exception as e:
+                return False
 
     def chooseReadType(self):
         if self.fileSuffix == "mp3":
             self.songFile = MP3(self.file, ID3=ID3)
             self.songFile.tags.update_to_v24()
+            self.songFile.save()
             # 歌曲名称
             self.tagTitle = "TIT2"
             # 歌手
@@ -92,7 +100,7 @@ class GetAudioInfo(prepare):
             album = ''
         return album
 
-    def getDate(self):
+    def getPubDate(self):
         """
         获取专辑名
         """
@@ -102,7 +110,7 @@ class GetAudioInfo(prepare):
             album = ''
         return album
 
-    def getType(self):
+    def getGenre(self):
         """
         获取专辑名
         """

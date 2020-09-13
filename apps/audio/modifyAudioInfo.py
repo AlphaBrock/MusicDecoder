@@ -14,24 +14,25 @@ class modifyAudioInfo(prepare):
     def __init__(self, audioFile, audioPic):
         super().__init__(audioFile)
         self.audioPic = audioPic
-        if self.audioPic.endswith("png"):
-            self.mime = 'image/png'
-        elif self.audioPic.endswith("jpg"):
-            self.mime = 'image/jpeg'
-        else:
-            raise TypeError("哥，图片格式不对，只支持jpg和png的")
+        self.albumart = audioPic
+        # if self.audioPic.endswith("png"):
+        #     self.mime = 'image/png'
+        # elif self.audioPic.endswith("jpg"):
+        #     self.mime = 'image/jpeg'
+        # else:
+        #     raise TypeError("哥，图片格式不对，只支持jpg和png的")
 
-    def readPic(self):
-        with open(self.audioPic,'rb') as f:
-            self.albumart = f.read()
-        f.close()
+    # def readPic(self):
+    #     with open(self.audioPic,'rb') as f:
+    #         self.albumart = f.read()
+    #     f.close()
 
     def addCover(self):
         if self.fileSuffix == "mp3" or self.fileSuffix == "MP3":
             self.songFile.tags.add(
                 APIC(
                     encoding=3,
-                    mime=self.mime,
+                    mime='image/jpeg',
                     type=3,
                     desc="Cover",
                     data=self.albumart
@@ -40,7 +41,7 @@ class modifyAudioInfo(prepare):
         elif self.fileSuffix == "flac" or self.fileSuffix == "FLAC":
             image = Picture()
             image.type = id3.PictureType.COVER_FRONT
-            image.mime = self.mime
+            image.mime = 'image/jpeg'
             image.desc = "Cover"
             image.data = self.albumart
             image.width = 500

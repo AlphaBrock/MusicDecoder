@@ -10,8 +10,12 @@ from urllib.parse import urlencode
 
 import requests
 
+from apps.config.logger import setup_log
 
-class get_music_metadata(object):
+logger = setup_log()
+
+
+class get_music_metadata_from_qq(object):
 
     def __init__(self, search_text):
         self.search_text = search_text
@@ -52,9 +56,13 @@ class get_music_metadata(object):
             self.song_album = rsp['data']['song']['list'][0]['album']['name']
             self.song_time_public = rsp['data']['song']['list'][0]['time_public']
         except Exception as e:
-            pass
+            logger.exception("搜索QQ音乐获取歌曲网页地址，专辑，发行时间异常，抛出:{}".format(e))
 
     def get_song_detail(self):
+        """
+        单独网页获取歌曲专辑封面以及流派
+        :return:
+        """
         url = "https://y.qq.com/n/yqq/song/{}.html".format(self.song_mid)
         headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -66,12 +74,25 @@ class get_music_metadata(object):
         response = requests.request("GET", url, headers=headers)
         song = []
         try:
-            song_pic = re.compile('<img src=\"//([^\"]+)\"\s+onerror=').search(response.text).group(1).replace("300x300", "500x500")
+            song_pic = re.compile('<img src=\"//([^\"]+)\"\s+onerror=').search(response.text).group(1).replace(
+                "300x300", "500x500")
             song_info = re.compile('info : (.*)').search(response.text).group(1)
             song_info = json.loads(song_info)
-            genre = song_info['genre']['content'][0]['value']
-            song.append([self.song_album, self.song_time_public, song_pic, genre])
+            try:
+                genre = song_info['genre']['content'][0]['value']
+            except Exception as e:
+                logger.warning("文件:{}，获取流派失败，抛出异常:{}".format(self.search_text, e))
+                genre = ""
+            song = [self.song_album, self.song_time_public, song_pic, genre]
+            logger.info(
+                "文件:{}，获取歌曲信息成功,专辑:{},发行时间:{},专辑封面:{},流派:{}".format(self.search_text, self.song_album, self.song_time_public, song_pic, genre))
         except Exception as e:
-            print(e)
+            logger.exception("文件:{}，QQ音乐获取歌曲流派以及专辑封面异常，抛出:{}".format(self.search_text, e))
         finally:
             return song
+
+
+if __name__ == '__main__':
+    search_text = "张宇-趁早"
+    a = get_music_metadata_from_qq(search_text=search_text)
+    a.get_song_detail()

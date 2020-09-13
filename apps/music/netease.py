@@ -1,6 +1,7 @@
 # -*- coding=utf-8 -*-
 """
 从网易云获取歌曲信息，不到万部得以不使用这货，目前只能通过代理池来绕开反爬
+所以还是放弃治疗吧，基本不会用这玩意，大致上QQ音乐就够了，QQ音乐没有会使用豆瓣音乐
 """
 import base64
 import binascii
@@ -13,6 +14,9 @@ from urllib.parse import urlencode
 import requests
 from Crypto.Cipher import AES
 from bs4 import BeautifulSoup
+from apps.config.logger import setup_log
+
+logger = setup_log()
 
 
 def rsa_encrypt(text, pub_key, modulus):
@@ -72,7 +76,7 @@ def create_params_and_seckey(text, pub_key, MODULUS, nonce):
         enc_sec_key = rsa_encrypt(sec_key, pub_key, MODULUS)
         return enc_text, enc_sec_key
     except Exception as e:
-        config.logger1.exception("create_params_and_seckey 抛出异常:{}".format(e))
+        logger.exception("create_params_and_seckey 抛出异常:{}".format(e))
 
 
 def dict_loop(array, dict):
@@ -165,7 +169,7 @@ def obtain_params_and_seckey(body):
     return params, encSecKey
 
 
-class get_music_metadata(object):
+class get_music_metadata_from_netease(object):
 
     def __init__(self, search_text):
         self.search_text = search_text
@@ -195,13 +199,15 @@ class get_music_metadata(object):
             'encSecKey': encSecKey
         }
         response = requests.request("POST", url=url, headers=headers, data=payload)
+        logger.info("搜索网易云音乐正常，返回结果:{}".format(response.text))
         rsp = json.loads(response.text)
         try:
             if rsp['msg'] == "Cheating":
                 print("Ops, 网易云发现你在爬取数据了!")
+                logger.error("Ops, 网易云发现你在爬取数据了!")
             return rsp
         except Exception as e:
-            pass
+            logger.exception("搜索网易云音乐异常，抛出:{}".format(e))
 
     def getSongDetail(self):
         params = {
@@ -217,11 +223,13 @@ class get_music_metadata(object):
         }
 
         response = requests.request("GET", url, headers=headers)
+        logger.info("获取网易云音乐歌曲图片和发行时间，返回结果:{}".format(response.text))
         try:
             song_detail = BeautifulSoup(response.text, 'lxml').find('script').string
             song_detail = json.loads(song_detail)
             images = song_detail['images']
             pubDate = song_detail['pubDate']
+            logger.info("获取网易云音乐歌曲图片和发行时间正常，专辑封面:{}，发行时间:{}".format(response.text, images, pubDate))
             return images, pubDate
         except Exception as e:
-            pass
+            logger.exception("获取网易云音乐歌曲图片和发行时间异常，抛出:{}".format(e))

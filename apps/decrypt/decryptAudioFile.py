@@ -3,15 +3,20 @@
 可能是python版最快的解码速度了
 """
 import os
+import time
 import platform
 import QQMusicDecrypt
 import NetEaseMusicDecrypt
+from apps.config.logger import setup_log
+
+logger = setup_log()
 
 
 class decryptAudio(object):
     """
     解密音频文件
     """
+
     def __init__(self, audioDir):
         if not os.path.isdir(audioDir):
             raise Exception("哥，要求输入的是文件夹，不是其他的")
@@ -21,13 +26,16 @@ class decryptAudio(object):
         self.audioFileList = os.listdir(self.audioDir)
         self.allowedFormat = ['qmcogg', 'qmcflac', 'qmc0', 'ncm']
         self.sysStr = platform.system()
+        self.decrypt()
 
     def decrypt(self):
         global musicFilePath
+        decryptNum = 0
+        startTime = time.time()
         for audioFile in self.audioFileList:
             fileSuffix = audioFile.split('.')[-1]
             if fileSuffix not in self.allowedFormat:
-                print("文件:{}, 不需要解密, 跳过".format(audioFile))
+                logger.info("文件:{}, 不需要解密, 跳过".format(audioFile))
             else:
                 if self.audioDir[-1] == "/" or self.audioDir[-1] == "\\":
                     musicFilePath = self.audioDir + audioFile
@@ -39,7 +47,16 @@ class decryptAudio(object):
 
                 if fileSuffix == "ncm":
                     covertCost = NetEaseMusicDecrypt.decrypt(musicFilePath)
-                    print("文件:{}, 解密耗时:{}".format(audioFile, covertCost))
+                    decryptNum += 1
+                    logger.info("文件:{}, 解密耗时:{}".format(audioFile, covertCost))
                 else:
                     covertCost = QQMusicDecrypt.decrypt(musicFilePath)
-                    print("文件:{}, 解密耗时:{}".format(audioFile, covertCost))
+                    decryptNum += 1
+                    logger.info("文件:{}, 解密耗时:{}".format(audioFile, covertCost))
+        endTime = time.time()
+        logger.info("总计解密文件:{}，总耗时:{:.2f}".format(decryptNum, endTime-startTime))
+
+
+if __name__ == '__main__':
+    dir = "/Users/rizhiyi/github/MusicDecoder/music"
+    a = decryptAudio(dir)
